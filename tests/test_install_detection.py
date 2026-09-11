@@ -122,6 +122,12 @@ class TestIsHomebrew:
             mock_sys.prefix = "/usr/local/homebrew/opt/omlx/libexec"
             assert is_homebrew()
 
+    def test_caskroom_prefix_is_not_homebrew(self):
+        """Homebrew Caskroom environments must not be classified as formula installs."""
+        with patch("omlx.utils.install.sys") as mock_sys:
+            mock_sys.prefix = "/opt/homebrew/Caskroom/miniconda/base"
+            assert not is_homebrew()
+
     def test_non_homebrew_prefix(self):
         """Regular venv should not detect as Homebrew."""
         with patch("omlx.utils.install.sys") as mock_sys:
